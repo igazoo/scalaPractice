@@ -1,0 +1,11 @@
+@(message:String, data:Seq[models.User])(implicit request: MessagesRequestHeader)
+
+
+@main("Index Page", "Hello", "copyright 2018.") {
+    <p>@Html(message)</p>
+    <ul>
+        @for(item<-data){
+            <li>@item.id: @item.name </li>
+        }
+    </ul>
+}
