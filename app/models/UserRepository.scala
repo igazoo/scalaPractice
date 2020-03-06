@@ -5,7 +5,6 @@ import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-
 import scala.concurrent.{ Future, ExecutionContext }
 
 
@@ -21,15 +20,17 @@ class UserRepository @Inject()
   import dbConfig._
   import profile.api._
   import java.util.UUID;
-
+  import java.sql.Timestamp
+  import com.github.nscala_time.time.Imports._
 
   private class UserTable(tag: Tag)
       extends Table[User](tag, "user") {
     def id = column[String]("id", O.PrimaryKey)
     def name = column[String]("name")
+     def created: Rep[Timestamp] = column[Timestamp]("created_at")
 
 
-    def * = (id, name) <>
+    def * = (id, name,created) <>
         ((User.apply _).tupled, User.unapply)
   }
 
@@ -37,13 +38,11 @@ class UserRepository @Inject()
   private val user = TableQuery[UserTable]
 
   def index(): Future[Seq[User]] = db.run {
-  user.result
+  user.sortBy(_.created.desc).result
 }
 
 def create(name: String):Future[Int] =
-  var uuid = java.util.UUID.randomUUID.toString
-
     db.run(
-      user += User(uuid, name)
+      user += User(scala.util.Random.alphanumeric.take(36).mkString , name,new Timestamp(System.currentTimeMillis()))
     )
 }
