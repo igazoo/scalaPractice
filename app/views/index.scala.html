@@ -1,12 +1,13 @@
-@(message:String, data:Seq[models.User])(implicit request: MessagesRequestHeader)
+@(message:String, data:Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
 
 
 @main("Index Page", "Hello", "copyright 2018.") {
-    <p>@Html(message)</p>
+    <p>@flash.get("success").getOrElse(message)</p>
     <ul>
         @for(item<-data){
-            <li>@item.id: @item.name </li>
+            <li> @item.name </li>
         }
     </ul>
     <a href="add">追加</a>
+    <a href="post">投稿</a>
 }

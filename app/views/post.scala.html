@@ -1,0 +1,20 @@
+@(message:String, form:Form[PostForm], data:Seq[PostWithUser] )(implicit request: MessagesRequestHeader, flash: Flash)
+
+
+@main("投稿", "投稿ページ", "copyright2020") {
+    <p>@flash.get("success").getOrElse(post)</p>
+    @helper.form(action=routes.HomeController.addpost()) {
+        @helper.CSRF.formField
+        @helper.inputText(form("userId"))
+        @helper.inputText(form("text"))
+        <input type="submit" value="Add Message"/>
+    }
+    <hr>
+    <p>投稿一覧</p>
+    <ul>
+        @for(item<-data) {
+        <li> @item.post.text [@item.user.name]</li>
+        }
+    </ul>
+
+}
