@@ -48,7 +48,7 @@ class HomeController @Inject()(
 
 
     def  post() = Action.async {implicit request =>
-      repository2.listMsgWithP().map { posts =>
+      repository2.listPostWithP().map { posts =>
         Ok(views.html.post(
           "Text List.",
           Post.postForm, posts
@@ -60,7 +60,7 @@ class HomeController @Inject()(
     def addpost() = Action.async {implicit request =>
       Post.postForm.bindFromRequest.fold(
         errorForm => {
-          repository2.listMsgWithP().map { posts =>
+          repository2.listPostWithP().map { posts =>
             Ok(views.html.post(
               "ERROR.",
               errorForm, posts
@@ -68,7 +68,7 @@ class HomeController @Inject()(
           }
         },
         post => {
-          repository2.createMsg(post.userId, post.text).map { _ =>
+          repository2.createPost(post.userId, post.text).map { _ =>
             Redirect(routes.HomeController.post)
             .flashing("success"->"投稿しました")
           }

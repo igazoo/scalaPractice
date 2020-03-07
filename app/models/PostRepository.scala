@@ -61,7 +61,7 @@ class PostRepository @Inject()
 
 
   // Textのみの取得
-  def listMsg: Future[Seq[Post]] = {
+  def listPost: Future[Seq[Post]] = {
       db.run(
         posts.sortBy(_.created.desc).result // createdでソート
       )
@@ -69,7 +69,7 @@ class PostRepository @Inject()
 
 
   // User付Text（TextWithUser）の取得
-  def listMsgWithP(): Future[Seq[PostWithUser] ]= {
+  def listPostWithP(): Future[Seq[PostWithUser] ]= {
       val query = posts.sortBy(_.id.desc)
           .join(user).on(_.userId === _.id) // sortByは機能しない
       db.run(query.result).map { obj =>
@@ -81,13 +81,13 @@ class PostRepository @Inject()
   }
 
 
-  def getMsg(id:String): Future[Post] = db.run {
+  def getPost(id:String): Future[Post] = db.run {
       posts.filter(_.id === id).result.head
   }
 
 
 
-  def createMsg(userId: String, text:String):Future[Int] =
+  def createPost(userId: String, text:String):Future[Int] =
       db.run(
           posts += Post(scala.util.Random.alphanumeric.take(36).mkString , userId, text,
               new Timestamp(new Date().getTime))

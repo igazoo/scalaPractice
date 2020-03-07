@@ -12,6 +12,7 @@ object Comment {
   val commentForm: Form[CommentForm] = Form {
     mapping(
       "parent_postId"-> text,
+
       "text" -> nonEmptyText.verifying(error= "1文字以上に" , constraint=_.length >= 1)
       .verifying(error = "100文字以下に",constraint = _.length <= 100)
     )(CommentForm.apply)(CommentForm.unapply)
@@ -22,6 +23,7 @@ object Comment {
 case class Comment (
   id: String,
   parent_postId: String,
+
   text: String,
   created: Timestamp
 )

@@ -36,20 +36,21 @@ class CommentRepository @Inject()
 
       def * = (id, userId,text, created) <>
         ((Post.apply _).tupled, Post.unapply)
+
   }
 
 
   private val post = TableQuery[PostTable]
 
 
-  // text用のTableクラス
+  // comment用のTableクラス
   private class CommentsTable(tag: Tag)
     extends Table[Comment](tag, "comments") {
 
 
       def id = column[String]("id", O.PrimaryKey)
-
       def parent_postId = column[String]("parent_post_id")
+
       def text = column[String]("text")
       def created = column[Timestamp]("created")
 
@@ -62,8 +63,8 @@ class CommentRepository @Inject()
   private val comments = TableQuery[CommentsTable]
 
 
-  // Textのみの取得
-  def listMsg: Future[Seq[Comment]] = {
+  // textのみの取得
+  def listCom: Future[Seq[Comment]] = {
       db.run(
         comments.sortBy(_.created.desc).result // createdでソート
       )
@@ -71,9 +72,9 @@ class CommentRepository @Inject()
 
 
   // post付comment（CommentWithPost）の取得
-  def listMsgWithP(): Future[Seq[CommentWithPost] ]= {
+  def listComWithP(): Future[Seq[CommentWithPost] ]= {
       val query = comments.sortBy(_.id.desc)
-          .join(post).on(_.parent_postId === _.id) // sortByは機能しない
+          .join(post).on(_.parent_postId === _.id ) // sortByは機能しない
       db.run(query.result).map { obj =>
           obj.groupBy(_._1.id).map { case (_, tuples) =>
               val (comment, post) = tuples.head
@@ -89,9 +90,9 @@ class CommentRepository @Inject()
 
 
 
-  def createMsg(parent_postId: String,text:String):Future[Int] =
+  def createCom(parent_postId: String,text:String):Future[Int] =
       db.run(
-        comments += Comment(scala.util.Random.alphanumeric.take(36).mkString , parent_postId, text,
+        comments += Comment(scala.util.Random.alphanumeric.take(36).mkString, parent_postId ,text,
             new Timestamp(new Date().getTime))
       )
 }

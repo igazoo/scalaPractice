@@ -1,8 +1,8 @@
 @(message:String, form:Form[PostForm], data:Seq[PostWithUser] )(implicit request: MessagesRequestHeader, flash: Flash)
 
 
-@main("投稿", "投稿ページ", "copyright2020") {
-    <p>@flash.get("success").getOrElse(post)</p>
+@main("投稿", "投稿ページ", "") {
+
     @helper.form(action=routes.HomeController.addpost()) {
         @helper.CSRF.formField
         @helper.inputText(form("userId"))
@@ -13,8 +13,10 @@
     <p>投稿一覧</p>
     <ul>
         @for(item<-data) {
-        <li> @item.post.text [@item.user.name]</li>
+        <li>[@item.user.name] @item.post.text (@item.post.id) </li><a href="comment">コメントする </a>
         }
     </ul>
-    <a href="comment">コメントする</a>
+
+    <a href="index">ユーザー</a>
+
 }

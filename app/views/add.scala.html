@@ -1,7 +1,7 @@
 @(message:String, form:Form[UserForm] )(implicit request: MessagesRequestHeader)
 
 
-@main("Add User", "Add", "copyright 2018.") {
+@main("Add User", "Add", "") {
     <p>@message</p>
     @helper.form(action=routes.HomeController.create()) {
         @helper.CSRF.formField

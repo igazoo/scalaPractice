@@ -1,20 +1,22 @@
 @(message:String, form:Form[CommentForm], data:Seq[CommentWithPost] )(implicit request: MessagesRequestHeader, flash: Flash)
 
 
-@main("コメント", "コメントページ", "copyright2020") {
-    <p>@flash.get("success").getOrElse(comment)</p>
+@main("コメント", "コメントページ", "") {
+
     @helper.form(action=routes.CommentController.addcomment()) {
         @helper.CSRF.formField
         @helper.inputText(form("parent_postId"))
         @helper.inputText(form("text"))
         <input type="submit" value="Add Message"/>
     }
+
     <hr>
-    <p>コメント一覧</p>
+    <p>投稿とコメント一覧</p>
     <ul>
         @for(item<-data) {
-        <li> @item.comment.text [@item.post.text]</li>
+        <li>[@item.post.text] →（@item.comment.text ）</li>
         }
     </ul>
+    <a href="post">投稿ページへ</a>
 
 }

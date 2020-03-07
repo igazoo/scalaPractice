@@ -1,13 +1,13 @@
 @(message:String, data:Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
 
 
-@main("Index Page", "Hello", "copyright 2018.") {
-    <p>@flash.get("success").getOrElse(message)</p>
+@main("Index Page", "Hello", "") {
+
     <ul>
         @for(item<-data){
-            <li> @item.name </li>
+            <li> @item.name (@item.id)</li>
         }
     </ul>
-    <a href="add">追加</a>
+    <a href="add">ユーザーの追加</a>
     <a href="post">投稿</a>
 }

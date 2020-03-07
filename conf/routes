@@ -5,6 +5,7 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
+GET     /index                           controllers.HomeController.index()
 GET    /add   controllers.HomeController.add()
 POST   /create   controllers.HomeController.create()
 GET    /post   controllers.HomeController.post()

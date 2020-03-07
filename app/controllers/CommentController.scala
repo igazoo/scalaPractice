@@ -16,7 +16,7 @@ class CommentController @Inject()(
   extends MessagesAbstractController(cc) {
 
     def  comment() = Action.async {implicit request =>
-      repository2.listMsgWithP().map { comments =>
+      repository2.listComWithP().map { comments =>
         Ok(views.html.comment(
           "comment List.",
           Comment.commentForm, comments
@@ -27,7 +27,7 @@ class CommentController @Inject()(
     def addcomment() = Action.async {implicit request =>
       Comment.commentForm.bindFromRequest.fold(
         errorForm => {
-          repository2.listMsgWithP().map { comments =>
+          repository2.listComWithP().map { comments =>
             Ok(views.html.comment(
               "ERROR.",
               errorForm, comments
@@ -35,7 +35,7 @@ class CommentController @Inject()(
           }
         },
         comment => {
-          repository2.createMsg(comment.parent_postId, comment.text).map { _ =>
+          repository2.createCom(comment.parent_postId, comment.text).map { _ =>
             Redirect(routes.CommentController.comment)
             .flashing("success"->"投稿しました")
           }
