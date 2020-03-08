@@ -31,7 +31,7 @@ class HomeController @Inject()(
     }
 
 
-    def create() = Action.async { implicit request =>
+    def create_user() = Action.async { implicit request =>
       User.userForm.bindFromRequest.fold(
         errorForm => {
           Future.successful(Ok(views.html.add("error.", errorForm)))
@@ -47,9 +47,9 @@ class HomeController @Inject()(
 
 
 
-    def  post() = Action.async {implicit request =>
+    def  posts() = Action.async {implicit request =>
       repository2.listPostWithP().map { posts =>
-        Ok(views.html.post(
+        Ok(views.html.posts(
           "Text List.",
           Post.postForm, posts
         ))
@@ -57,11 +57,11 @@ class HomeController @Inject()(
     }
 
 
-    def addpost() = Action.async {implicit request =>
+    def create() = Action.async {implicit request =>
       Post.postForm.bindFromRequest.fold(
         errorForm => {
           repository2.listPostWithP().map { posts =>
-            Ok(views.html.post(
+            Ok(views.html.posts(
               "ERROR.",
               errorForm, posts
             ))
@@ -69,7 +69,7 @@ class HomeController @Inject()(
         },
         post => {
           repository2.createPost(post.userId, post.text).map { _ =>
-            Redirect(routes.HomeController.post)
+            Redirect(routes.HomeController.posts)
             .flashing("success"->"投稿しました")
           }
         }

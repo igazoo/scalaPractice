@@ -3,7 +3,7 @@
 
 @main("Add User", "Add", "") {
     <p>@message</p>
-    @helper.form(action=routes.HomeController.create()) {
+    @helper.form(action=routes.HomeController.create_user()) {
         @helper.CSRF.formField
         @helper.inputText(form("name"))
 
