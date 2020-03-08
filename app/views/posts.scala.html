@@ -2,7 +2,6 @@
 
 
 @main("投稿", "投稿ページ", "") {
-
     @helper.form(action=routes.HomeController.create()) {
         @helper.CSRF.formField
         @helper.inputText(form("userId"))
@@ -13,10 +12,9 @@
     <p>投稿一覧</p>
     <ul>
         @for(item<-data) {
-        <li>[@item.user.name] @item.post.text (@item.post.id)  </li><a href="comment">コメントする </a>
+        <li>[@item.user.name] @item.post.text (post_id: @item.post.id)  </li><a href="comment">コメントする </a>
         }
     </ul>
-
     <a href="index">ユーザー</a>
 
 }

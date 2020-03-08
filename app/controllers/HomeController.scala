@@ -29,8 +29,6 @@ class HomeController @Inject()(
         User.userForm
       ))
     }
-
-
     def create_user() = Action.async { implicit request =>
       User.userForm.bindFromRequest.fold(
         errorForm => {
@@ -44,8 +42,6 @@ class HomeController @Inject()(
         }
       )
     }
-
-
 
     def  posts() = Action.async {implicit request =>
       repository2.listPostWithP().map { posts =>

@@ -1,11 +1,9 @@
 @(message:String, data:Seq[User])(implicit request: MessagesRequestHeader, flash: Flash)
 
-
 @main("Index Page", "Hello", "") {
-
     <ul>
         @for(item<-data){
-            <li> @item.name (@item.id)</li>
+            <li> @item.name (user_id: @item.id)</li>
         }
     </ul>
     <a href="add">ユーザーの追加</a>

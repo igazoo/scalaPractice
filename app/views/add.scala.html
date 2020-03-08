@@ -6,7 +6,6 @@
     @helper.form(action=routes.HomeController.create_user()) {
         @helper.CSRF.formField
         @helper.inputText(form("name"))
-
         <input type="submit" value="Add User"/>
     }
 }
